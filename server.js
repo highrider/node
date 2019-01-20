@@ -1,18 +1,19 @@
 const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
+const port = process.env.PORT || 3000;
 
 let app = express(); //вот здесь и начинается наше приложение, здесь мы запустили так сказать конструктор
 
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
 
-app.use((req, res, next) => {
+app.use((req, res, next) => {  //здесь мы добавляем промежуточный функционал  при помощи команды use, задает параметры функции
     let now = new Date().toString();
 
-    let log = `${now}: ${req.method} ${req.url}`;
+    let log = `${now}: ${req.method} ${req.url}`; 
     console.log(log);
-    fs.appendFile('server.log', log + '\n', (err) => {
+    fs.appendFile('server.log', log + '\n', (err) => { //записываем в файл логирования наш
         if(err){
             console.log('Unable to append to server.log');
         }
@@ -59,6 +60,6 @@ app.get('/bad', (req,res) => {
 
 //но это все безсмысленно пока мы не установим обработчик на событие app.get()
 //сделаем это
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('server now is set up');
 });  //биндим этот обработчик на порт на нашей машине
